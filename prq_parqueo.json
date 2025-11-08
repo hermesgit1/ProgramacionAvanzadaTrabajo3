@@ -1,0 +1,4 @@
+[
+  {"id": 1, "nombre_provincia": "San José", "nombre": "Parqueo Principal Centro", "precio_por_hora": 1000.00},
+  {"id": 2, "nombre_provincia": "Alajuela", "nombre": "Parqueo Mall Internacional", "precio_por_hora": 800.00}
+]
