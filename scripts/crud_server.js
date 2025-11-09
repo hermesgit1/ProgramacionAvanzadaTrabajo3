@@ -13,6 +13,16 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from public directory
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+// Serve OpenAPI/Swagger JSON so the static swagger UI can load it
+app.get('/swagger.json', (req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, '..', 'swagger.json'));
+    } catch (err) {
+        console.error('Error sending swagger.json:', err);
+        res.status(500).json({ error: 'Could not load swagger.json' });
+    }
+});
+
 // Create repositories (default to JSON for safety)
 const useDb = process.env.USE_DB === 'true';
 console.log('Creating repositories with source:', useDb ? 'db' : 'json');
