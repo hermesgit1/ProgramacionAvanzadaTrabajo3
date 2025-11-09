@@ -16,18 +16,20 @@ async function getStoredSecret(account) {
 }
 
 async function getConnection(account) {
-  const secretStr = await getStoredSecret(account);
-  const secret = JSON.parse(secretStr);
-  // secret expected: { host, port, user, password, database }
-  const conn = await mysql.createConnection({
-    host: secret.host,
-    port: secret.port,
-    user: secret.user,
-    password: secret.password,
-    database: secret.database,
-    // connectionLimit not used for single connection
-  });
-  return conn;
+  try {
+    // Use local MySQL connection
+    const conn = await mysql.createConnection({
+      host: 'localhost',
+      port: 3306,
+      user: 'root',
+      password: 'Hermes',
+      database: 'sistema_parqueo'
+    });
+    return conn;
+  } catch (err) {
+    console.error('Error connecting to database:', err);
+    throw err;
+  }
 }
 
 module.exports = { getConnection };

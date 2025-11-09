@@ -3,9 +3,9 @@ const fs = require('fs');
 
 // Create the connection configuration
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Hermes',
+    host: 'hecferme-progra-avanzada-mysql.mysql.database.azure.com',
+    user: 'user03',
+    password: 'StrongPwd_[03]!',
     database: 'sistema_parqueo',
     port: 3306,
     multipleStatements: true

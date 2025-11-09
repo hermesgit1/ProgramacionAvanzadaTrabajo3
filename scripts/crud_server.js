@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { createRepositories } = require('../repositories');
+const ingresoModel = require('../models/prq_ingreso_automoviles');
 
 const app = express();
 const port = 3000;
@@ -13,11 +14,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Create repositories (default to JSON for safety)
-const repos = createRepositories(process.env.USE_DB === 'true' ? 'db' : 'json');
+const useDb = process.env.USE_DB === 'true';
+console.log('Creating repositories with source:', useDb ? 'db' : 'json');
+const repos = createRepositories(useDb ? 'db' : 'json');
 
 // Automoviles API endpoints
 app.get('/api/automoviles', async (req, res) => {
     try {
+        console.log('GET /api/automoviles - filters:', req.query);
         const filters = {};
         if (req.query.color) filters.color = req.query.color;
         if (req.query.yearMin) filters.yearMin = parseInt(req.query.yearMin);
@@ -25,8 +29,10 @@ app.get('/api/automoviles', async (req, res) => {
         if (req.query.fabricante) filters.fabricante = req.query.fabricante;
         if (req.query.tipo) filters.tipo = req.query.tipo;
         const autos = await repos.automoviles.listByFilters(filters);
+        console.log('Found automoviles:', autos);
         res.json(autos);
     } catch (err) {
+        console.error('Error in GET /api/automoviles:', err);
         res.status(500).json({ error: err.message });
     }
 });
@@ -55,6 +61,17 @@ app.delete('/api/automoviles/:id', async (req, res) => {
         const success = await repos.automoviles.delete(req.params.id);
         if (!success) return res.status(404).json({ error: 'Not found' });
         res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// get by id
+app.get('/api/automoviles/:id', async (req, res) => {
+    try {
+        const auto = await repos.automoviles.getById(req.params.id);
+        if (!auto) return res.status(404).json({ error: 'Not found' });
+        res.json(auto);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -104,6 +121,17 @@ app.delete('/api/parqueos/:id', async (req, res) => {
     }
 });
 
+// get by id
+app.get('/api/parqueos/:id', async (req, res) => {
+    try {
+        const p = await repos.parqueo.getById(req.params.id);
+        if (!p) return res.status(404).json({ error: 'Not found' });
+        res.json(p);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // Ingreso API endpoints
 app.get('/api/ingresos', async (req, res) => {
     try {
@@ -124,6 +152,25 @@ app.get('/api/ingresos', async (req, res) => {
     }
 });
 
+// get by id
+app.get('/api/ingresos/:id', async (req, res) => {
+    try {
+        const ingreso = await repos.ingreso.getById(req.params.id);
+        if (!ingreso) return res.status(404).json({ error: 'Not found' });
+        // attach computed fields when possible
+        try {
+            const parqueo = await repos.parqueo.getById(ingreso.id_parqueo);
+            const precio = parqueo ? parqueo.precio_por_hora : null;
+            ingresoModel.attachComputedFields(ingreso, precio, 'proportional');
+        } catch (e) {
+            // ignore compute errors
+        }
+        res.json(ingreso);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.post('/api/ingresos', async (req, res) => {
     try {
         const ingreso = await repos.ingreso.create(req.body);
@@ -137,8 +184,19 @@ app.put('/api/ingresos/:id', async (req, res) => {
     try {
         const ingreso = await repos.ingreso.update(req.params.id, req.body);
         if (!ingreso) return res.status(404).json({ error: 'Not found' });
-        res.json(ingreso);
+        
+        // Attach computed fields for response
+        try {
+            const parqueo = await repos.parqueo.getById(ingreso.id_parqueo);
+            const precio = parqueo ? parqueo.precio_por_hora : null;
+            const ingresoWithComputed = ingresoModel.attachComputedFields(ingreso, precio, 'proportional');
+            res.json(ingresoWithComputed);
+        } catch (e) {
+            console.error('Error computing fields:', e);
+            res.json(ingreso);
+        }
     } catch (err) {
+        console.error('Error updating ingreso:', err);
         res.status(500).json({ error: err.message });
     }
 });
