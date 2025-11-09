@@ -40,5 +40,12 @@
     "anio": 1994,
     "fabricante": "Toyota Tercel",
     "tipo": "Sedán "
+  },
+  {
+    "id": 7,
+    "color": "Negro",
+    "anio": 2025,
+    "fabricante": "TESLA-API-TEST-123",
+    "tipo": "4x4"
   }
 ]
