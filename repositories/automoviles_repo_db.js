@@ -5,8 +5,13 @@ class AutomovilesRepositoryDb extends AutomovilesRepository {
   async getById(id) {
     const conn = await getConnection();
     try {
+      console.log('Executing getById query with id:', id);
       const [rows] = await conn.query('SELECT id, color, anio, fabricante, tipo FROM prq_automoviles WHERE id = ?', [id]);
+      console.log('getById result:', rows);
       return rows && rows.length ? rows[0] : null;
+    } catch (err) {
+      console.error('Error in getById:', err);
+      throw err;
     } finally {
       await conn.end();
     }
@@ -21,11 +26,21 @@ class AutomovilesRepositoryDb extends AutomovilesRepository {
     if (filters.yearMin != null) { where.push('anio >= ?'); params.push(filters.yearMin); }
     if (filters.yearMax != null) { where.push('anio <= ?'); params.push(filters.yearMax); }
     const sql = 'SELECT id, color, anio, fabricante, tipo FROM prq_automoviles' + (where.length ? (' WHERE ' + where.join(' AND ')) : '') + ' ORDER BY id';
+    
+    console.log('Executing listByFilters query:', sql);
+    console.log('With params:', params);
+    
     const conn = await getConnection();
     try {
       const [rows] = await conn.query(sql, params);
+      console.log('listByFilters found rows:', rows.length);
       return rows;
-    } finally { await conn.end(); }
+    } catch (err) {
+      console.error('Error in listByFilters:', err);
+      throw err;
+    } finally {
+      await conn.end();
+    }
   }
 
   async create(record) {

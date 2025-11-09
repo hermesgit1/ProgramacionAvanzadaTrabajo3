@@ -1,7 +1,44 @@
 [
-  {"id": 1, "color": "Blanco", "anio": 2022, "fabricante": "Toyota", "tipo": "sedán"},
-  {"id": 2, "color": "Negro", "anio": 2021, "fabricante": "Honda", "tipo": "sedán"},
-  {"id": 3, "color": "Rojo", "anio": 2023, "fabricante": "Nissan", "tipo": "sedán"},
-  {"id": 4, "color": "Azul", "anio": 2020, "fabricante": "Hyundai", "tipo": "4x4"},
-  {"id": 5, "color": "Gris", "anio": 2022, "fabricante": "Mazda", "tipo": "sedán"}
+  {
+    "id": 1,
+    "color": "Blanco",
+    "anio": 2022,
+    "fabricante": "Toyota",
+    "tipo": "sedán"
+  },
+  {
+    "id": 2,
+    "color": "Negro",
+    "anio": 2021,
+    "fabricante": "Honda",
+    "tipo": "sedán"
+  },
+  {
+    "id": 3,
+    "color": "Rojo",
+    "anio": 2023,
+    "fabricante": "Nissan",
+    "tipo": "sedán"
+  },
+  {
+    "id": 4,
+    "color": "Azul",
+    "anio": 2020,
+    "fabricante": "Hyundai",
+    "tipo": "4x4"
+  },
+  {
+    "id": 5,
+    "color": "Gris",
+    "anio": 2022,
+    "fabricante": "Mazda",
+    "tipo": "sedán"
+  },
+  {
+    "id": 6,
+    "color": "Verde",
+    "anio": 1994,
+    "fabricante": "Toyota Tercel",
+    "tipo": "Sedán "
+  }
 ]
