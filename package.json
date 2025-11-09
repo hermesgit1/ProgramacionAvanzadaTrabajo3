@@ -1,0 +1,30 @@
+{
+  "name": "programacionavanzadatrabajo3",
+  "version": "1.0.0",
+  "description": "Sistema de Parqueos - CRUD Interface",
+  "main": "scripts/crud_server.js",
+  "scripts": {
+    "start": "node scripts/crud_server.js",
+    "start:db": "set USE_DB=true && node scripts/crud_server.js",
+    "test": "node tests/test_ingreso_custom.js",
+    "test:all": "node tests/test_ingreso_custom.js && node scripts/test_custom_fields.js",
+    "demo": "node scripts/demo_repos.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hermesgit1/ProgramacionAvanzadaTrabajo3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/hermesgit1/ProgramacionAvanzadaTrabajo3/issues"
+  },
+  "homepage": "https://github.com/hermesgit1/ProgramacionAvanzadaTrabajo3#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "keytar": "^7.9.0",
+    "mysql2": "^3.15.3"
+  }
+}
