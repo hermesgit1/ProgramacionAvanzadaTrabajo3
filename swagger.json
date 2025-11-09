@@ -1,0 +1,149 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Parqueo CRUD API",
+    "version": "1.0.0",
+    "description": "API for prq_automoviles, prq_parqueo and prq_ingreso_automoviles (CRUD + query filters)"
+  },
+  "servers": [
+    { "url": "http://localhost:3000" }
+  ],
+  "paths": {
+    "/api/automoviles": {
+      "get": {
+        "summary": "List automoviles with optional filters",
+        "parameters": [
+          { "name": "color", "in": "query", "schema": { "type": "string" } },
+          { "name": "yearMin", "in": "query", "schema": { "type": "integer" } },
+          { "name": "yearMax", "in": "query", "schema": { "type": "integer" } },
+          { "name": "fabricante", "in": "query", "schema": { "type": "string" } },
+          { "name": "tipo", "in": "query", "schema": { "type": "string" }, "description": "sedán, 4x4, moto" }
+        ],
+        "responses": { "200": { "description": "Array of automoviles", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Automovil" } } } } }
+      },
+      "post": {
+        "summary": "Create a new automovil",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AutomovilCreate" } } } },
+        "responses": { "200": { "description": "Created automovil", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Automovil" } } } } }
+      }
+    },
+    "/api/automoviles/{id}": {
+      "get": { "summary": "Get automovil by id", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Auto", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Automovil" } } } }, "404": { "description": "Not found" } }
+,
+      "put": { "summary": "Update an automovil", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AutomovilCreate" } } } }, "responses": { "200": { "description": "Updated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Automovil" } } } }, "404": { "description": "Not found" } }
+,
+      "delete": { "summary": "Delete automovil", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Deleted" }, "404": { "description": "Not found" } } }
+    },
+
+    "/api/parqueos": {
+      "get": {
+        "summary": "List parqueos with filters",
+        "parameters": [
+          { "name": "nombre_provincia", "in": "query", "schema": { "type": "string" } },
+          { "name": "nombre", "in": "query", "schema": { "type": "string" } },
+          { "name": "precioMin", "in": "query", "schema": { "type": "number" } },
+          { "name": "precioMax", "in": "query", "schema": { "type": "number" } }
+        ],
+        "responses": { "200": { "description": "Array of parqueos", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Parqueo" } } } } }
+      },
+      "post": {
+        "summary": "Create a parqueo",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ParqueoCreate" } } } },
+        "responses": { "200": { "description": "Created parqueo", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Parqueo" } } } } }
+      }
+    },
+    "/api/parqueos/{id}": {
+      "get": { "summary": "Get parqueo by id", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Parqueo", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Parqueo" } } } }, "404": { "description": "Not found" } } ,
+      "put": { "summary": "Update parqueo", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ParqueoCreate" } } } }, "responses": { "200": { "description": "Updated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Parqueo" } } } }, "404": { "description": "Not found" } } ,
+      "delete": { "summary": "Delete parqueo", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Deleted" }, "404": { "description": "Not found" } } }
+    },
+
+    "/api/ingresos": {
+      "get": {
+        "summary": "List ingresos with optional type or province and date range",
+        "parameters": [
+          { "name": "tipo", "in": "query", "schema": { "type": "string" } },
+          { "name": "provincia", "in": "query", "schema": { "type": "string" } },
+          { "name": "start", "in": "query", "schema": { "type": "string", "format": "date-time" }, "description": "Start datetime (YYYY-MM-DD HH:mm:ss)" },
+          { "name": "end", "in": "query", "schema": { "type": "string", "format": "date-time" }, "description": "End datetime (YYYY-MM-DD HH:mm:ss)" }
+        ],
+        "responses": { "200": { "description": "Array of ingresos with computed fields", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Ingreso" } } } } }
+      },
+      "post": {
+        "summary": "Create ingreso (entry)",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/IngresoCreate" } } } },
+        "responses": { "200": { "description": "Created ingreso", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Ingreso" } } } } }
+      }
+    },
+    "/api/ingresos/{id}": {
+      "get": { "summary": "Get ingreso by id (with computed fields when possible)", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Ingreso", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Ingreso" } } } }, "404": { "description": "Not found" } } ,
+      "put": { "summary": "Update ingreso (for example set salida)", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/IngresoCreate" } } } }, "responses": { "200": { "description": "Updated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Ingreso" } } } }, "404": { "description": "Not found" } } ,
+      "delete": { "summary": "Delete ingreso", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Deleted" }, "404": { "description": "Not found" } } }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Automovil": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "color": { "type": "string" },
+          "anio": { "type": "integer" },
+          "fabricante": { "type": "string" },
+          "tipo": { "type": "string", "enum": ["sedán", "4x4", "moto"] }
+        }
+      },
+      "AutomovilCreate": {
+        "type": "object",
+        "required": ["color", "anio", "fabricante", "tipo"],
+        "properties": {
+          "color": { "type": "string" },
+          "anio": { "type": "integer" },
+          "fabricante": { "type": "string" },
+          "tipo": { "type": "string", "enum": ["sedán", "4x4", "moto"] }
+        }
+      },
+      "Parqueo": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "nombre_provincia": { "type": "string" },
+          "nombre": { "type": "string" },
+          "precio_por_hora": { "type": "number", "format": "double" }
+        }
+      },
+      "ParqueoCreate": {
+        "type": "object",
+        "required": ["nombre_provincia", "nombre", "precio_por_hora"],
+        "properties": {
+          "nombre_provincia": { "type": "string" },
+          "nombre": { "type": "string" },
+          "precio_por_hora": { "type": "number", "format": "double" }
+        }
+      },
+      "Ingreso": {
+        "type": "object",
+        "properties": {
+          "consecutivo": { "type": "integer" },
+          "id_parqueo": { "type": "integer" },
+          "id_automovil": { "type": "integer" },
+          "fecha_hora_entrada": { "type": "string", "format": "date-time" },
+          "fecha_hora_salida": { "type": "string", "format": "date-time", "nullable": true },
+          "durationMinutes": { "type": "number", "nullable": true },
+          "durationHours": { "type": "number", "nullable": true },
+          "amountToPay": { "type": "number", "nullable": true }
+        }
+      },
+      "IngresoCreate": {
+        "type": "object",
+        "required": ["id_parqueo", "id_automovil"],
+        "properties": {
+          "id_parqueo": { "type": "integer" },
+          "id_automovil": { "type": "integer" },
+          "fecha_hora_entrada": { "type": "string", "format": "date-time" },
+          "fecha_hora_salida": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      }
+    }
+  }
+}
