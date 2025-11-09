@@ -103,5 +103,38 @@
     "id_automovil": 5,
     "fecha_hora_entrada": "2025-11-08 19:00:00",
     "fecha_hora_salida": null
+  },
+  {
+    "id_parqueo": 1,
+    "id_automovil": 1,
+    "consecutivo": 16,
+    "fecha_hora_entrada": "2025-11-09 02:00:49",
+    "fecha_hora_salida": "2025-11-09 03:12:32"
+  },
+  {
+    "id_parqueo": 1,
+    "id_automovil": 1,
+    "consecutivo": 17,
+    "fecha_hora_entrada": "2025-11-09 02:00:58",
+    "fecha_hora_salida": "2025-11-09 03:12:32"
+  },
+  {
+    "id_parqueo": 1,
+    "id_automovil": 1,
+    "consecutivo": 18,
+    "fecha_hora_entrada": "2025-11-09 02:01:15"
+  },
+  {
+    "id_parqueo": 1,
+    "id_automovil": 1,
+    "fecha_hora_entrada": "2025-11-09 10:00:00",
+    "consecutivo": 19
+  },
+  {
+    "id_parqueo": 1,
+    "id_automovil": 1,
+    "fecha_hora_entrada": "2025-11-09 10:00:00",
+    "consecutivo": 20,
+    "fecha_hora_salida": "2025-11-09 12:00:00"
   }
 ]
